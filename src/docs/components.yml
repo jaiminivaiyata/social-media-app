@@ -1,0 +1,166 @@
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+        role:
+          type: string
+          enum: [user, admin]
+      example:
+        id: 5ebac534954b54139806c112
+        email: fake@example.com
+        name: fake name
+        role: user
+
+    Token:
+      type: object
+      properties:
+        token:
+          type: string
+        expires:
+          type: string
+          format: date-time
+      example:
+        token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZWJhYzUzNDk1NGI1NDEzOTgwNmMxMTIiLCJpYXQiOjE1ODkyOTg0ODQsImV4cCI6MTU4OTMwMDI4NH0.m1U63blB0MLej_WfB7yC2FTMnCziif9X8yzwDEfJXAg
+        expires: 2020-05-12T16:18:04.793Z
+
+    AuthTokens:
+      type: object
+      properties:
+        access:
+          $ref: '#/components/schemas/Token'
+        refresh:
+          $ref: '#/components/schemas/Token'
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: number
+        message:
+          type: string
+    
+    Todo:
+      type: object
+      properties:
+        id:
+          type: string
+        user:
+          type: string
+        todo:
+          type: string
+        is_completed:
+          type: boolean
+      example:
+        id: 5ebac534954b54139806c112
+        user: 5ebac534954b54139806c113
+        todo: new todo item
+        is_completed: false
+    
+    Comment:
+      type: object
+      properties:
+        id:
+          type: string
+        user:
+          type: string
+        post:
+          type: string
+        comment:
+          type: string
+      example:
+        user: 643fa54635db1e80d8a9be6d
+        post: 6441294df50d7d2fdd56afe5
+        comment: second comment
+        id: 64412a281e29bfd2377f82d9
+
+    Post:
+      type: object
+      properties:
+        id:
+          type: string
+        user:
+          $ref: '#/components/schemas/Error'
+        post:
+          type: string
+        comment:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+      example:
+        user:
+          name: fake name
+          email: fake@gmail.com
+          role: user
+          id: 643fa54635db1e80d8a9be6d
+        post: my first post with comment
+        comment:
+          - user: 643fa54635db1e80d8a9be6d
+            post: 6441294df50d7d2fdd56afe5
+            comment: second comment
+            id: 64412a281e29bfd2377f82d9
+          - user: 643fa54635db1e80d8a9be6d
+            post: 6441294df50d7d2fdd56afe5
+            comment: second comment
+            id: 64412a3f6a8f0577986ed415
+        id: 6441294df50d7d2fdd56afe5
+    
+  responses:
+    DuplicateEmail:
+      description: Email already taken
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 400
+            message: Email already taken
+    DuplicateTodo:
+      description: Todo item already exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 400
+            message: Todo item already exist
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 401
+            message: Please authenticate
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 403
+            message: Forbidden
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 404
+            message: Not found
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
