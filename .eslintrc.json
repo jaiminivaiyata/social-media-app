@@ -1,0 +1,38 @@
+{
+    "env": {
+        "commonjs": true,
+        "es2021": true,
+        "node": true
+    },
+    "extends": [
+        "google",
+        "eslint:recommended"
+    ],
+    "plugins": [
+        "sonarjs"
+    ],
+    "parserOptions": {
+        "ecmaVersion": 12
+    },
+    "rules": {
+        "semi": [
+            "error",
+            "always"
+        ],
+        "quotes": [
+            "error",
+            "double"
+        ],
+        "linebreak-style": 0,
+        "max-len": 0,
+        "indent": 0,
+        "comma-dangle": 0,
+        "padded-blocks": 0,
+        "no-trailing-spaces": 0,
+        "require-jsdoc": 0,
+        "new-cap": 0,
+        "no-constant-condition":0,
+        "no-prototype-builtins":0,
+        "valid-jsdoc":0
+    }
+}
